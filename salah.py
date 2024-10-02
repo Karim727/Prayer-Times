@@ -9,7 +9,7 @@ import argparse
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
-from colorama import Fore
+from colorama import Fore, Style
 
 
 # Fetching the Prayer times from a website.
@@ -52,9 +52,9 @@ def pp(option):
             #OPTION a
             if option == "a":
                 if 'active' in row.get('class', []):
-                    print(f"{prayer_name:<10} {Fore.GREEN}{prayer_time_str:<10}{Fore.WHITE} {Fore.RED}(ACTIVE){Fore.WHITE}") 
+                    print(f"{prayer_name:<10} {Fore.GREEN}{prayer_time_str:<10}{Style.RESET_ALL} {Fore.RED}(ACTIVE){Style.RESET_ALL}") 
                 else:
-                    print(f"{prayer_name:<10} {Fore.GREEN}{prayer_time_str:<10}{Fore.WHITE}")
+                    print(f"{prayer_name:<10} {Fore.GREEN}{prayer_time_str:<10}{Style.RESET_ALL}")
                     
             #OPTION n
             if option == "n":
@@ -66,7 +66,7 @@ def pp(option):
                     hours_left = time_left.seconds // 3600
                     minutes_left = (time_left.seconds % 3600) // 60
                     seconds_left = time_left.seconds % 60
-                    print(f"{prayer_name:<10} {Fore.GREEN}{prayer_time_str:<10}{Fore.WHITE} Time left: {Fore.YELLOW}{hours_left}h {minutes_left}m {seconds_left}s{Fore.WHITE}")
+                    print(f"{prayer_name:<10} {Fore.GREEN}{prayer_time_str:<10}{Style.RESET_ALL} Time left: {Fore.YELLOW}{hours_left}h {minutes_left}m {seconds_left}s{Style.RESET_ALL}")
                     
             #OPTION l
             if option == "l":
@@ -84,7 +84,7 @@ def pp(option):
                     hours_ellapsed = time_ellapsed.seconds // 3600
                     minutes_ellapsed = (time_ellapsed.seconds % 3600) // 60
                     seconds_ellapsed = time_ellapsed.seconds % 60
-                    print(f"{prayer_name} was {Fore.YELLOW}{hours_ellapsed}h {minutes_ellapsed}m {seconds_ellapsed}s{Fore.WHITE} ago")
+                    print(f"{prayer_name} was {Fore.YELLOW}{hours_ellapsed}h {minutes_ellapsed}m {seconds_ellapsed}s{Style.RESET_ALL} ago")
                     
                     break
                             
@@ -95,7 +95,7 @@ def pp(option):
                     hours_ellapsed = time_ellapsed.seconds // 3600
                     minutes_ellapsed = (time_ellapsed.seconds % 3600) // 60
                     seconds_ellapsed = time_ellapsed.seconds % 60
-                    print(f"{last_prayer} was {Fore.YELLOW}{hours_ellapsed}h {minutes_ellapsed}m {seconds_ellapsed}s{Fore.WHITE} ago")
+                    print(f"{last_prayer} was {Fore.YELLOW}{hours_ellapsed}h {minutes_ellapsed}m {seconds_ellapsed}s{Style.RESET_ALL} ago")
                     
                     #print("pass")
                 last_prayer = prayer_name
