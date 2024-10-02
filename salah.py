@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 
-#UPCOMING UPDATES: Create an option to fetch data from another city... by changing the default city -d option.
+# UPCOMING UPDATES: Create an option to fetch data from another city... by changing the default city -d option.
+# Convert this code into a cpp code.
+# Some Code improvement
 
 import argparse
 import requests
@@ -32,11 +34,11 @@ def fetch_Prayer_Times():
         
 def pp(option):
     
-    
     prayer_times = fetch_Prayer_Times()
-    flag = 0
+    #print(prayer_times)
+
     for row in prayer_times:
-            #print(row)
+            #print(prayer_times[5])
             prayer_name = row.find('strong').text.strip()  # Extract the prayer name
             prayer_time_str = row.find_all('td')[1].text.strip()  # Extract the prayer time
             
@@ -44,6 +46,8 @@ def pp(option):
             prayer_time = datetime.strptime(prayer_time_str, '%I:%M %p') + timedelta(hours=1)
             prayer_time_str = prayer_time.strftime('%I:%M %p')  
             
+            #condition for option l
+            last_prayer = 'Fajr'
             
             #OPTION a
             if option == "a":
@@ -66,22 +70,39 @@ def pp(option):
                     
             #OPTION l
             if option == "l":
-                if flag == 1:
+            
+                if last_prayer == 'Fajr' and 'active' in row.get('class',[]):
+                    prayer_name = prayer_times[5].find('strong').text.strip()  # Extract the prayer name
+                    prayer_time_str = prayer_times[5].find_all('td')[1].text.strip()  # Extract the prayer time
+                    
+                    # Add one hour, because the site is an hour late due to Daylight saving time
+                    prayer_time = datetime.strptime(prayer_time_str, '%I:%M %p') + timedelta(hours=1)
+                    prayer_time_str = prayer_time.strftime('%I:%M %p')  
+                    
+                    now = datetime.now()
+                    time_ellapsed = now - prayer_time
+                    hours_ellapsed = time_ellapsed.seconds // 3600
+                    minutes_ellapsed = (time_ellapsed.seconds % 3600) // 60
+                    seconds_ellapsed = time_ellapsed.seconds % 60
+                    print(f"{prayer_name} was {Fore.YELLOW}{hours_ellapsed}h {minutes_ellapsed}m {seconds_ellapsed}s{Fore.WHITE} ago")
+                    
+                    break
+                            
+                             
+                elif 'active' in row.get('class', []):
                     now = datetime.now()
                     time_ellapsed = now - last_time
                     hours_ellapsed = time_ellapsed.seconds // 3600
                     minutes_ellapsed = (time_ellapsed.seconds % 3600) // 60
                     seconds_ellapsed = time_ellapsed.seconds % 60
-                    
-                    #print(f"{last_prayer:<10} {last_time:<10}")
                     print(f"{last_prayer} was {Fore.YELLOW}{hours_ellapsed}h {minutes_ellapsed}m {seconds_ellapsed}s{Fore.WHITE} ago")
-                    flag = 0
-                if 'active' in row.get('class', []):
-                    flag = 1
+                    
                     #print("pass")
-                else:
-                    last_prayer = prayer_name
-                    last_time = prayer_time
+                last_prayer = prayer_name
+                last_time = prayer_time
+                
+
+
                 
                     
                     
