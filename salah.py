@@ -7,6 +7,8 @@ import argparse
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
+from colorama import Fore
+
 
 # Fetching the Prayer times from a website.
 def fetch_Prayer_Times():
@@ -32,7 +34,9 @@ def pp(option):
     
     
     prayer_times = fetch_Prayer_Times()
+    flag = 0
     for row in prayer_times:
+            #print(row)
             prayer_name = row.find('strong').text.strip()  # Extract the prayer name
             prayer_time_str = row.find_all('td')[1].text.strip()  # Extract the prayer time
             
@@ -41,14 +45,14 @@ def pp(option):
             prayer_time_str = prayer_time.strftime('%I:%M %p')  
             
             
-            #OPTION A
+            #OPTION a
             if option == "a":
                 if 'active' in row.get('class', []):
-                    print(f"{prayer_name:<10} {prayer_time_str:<10} (ACTIVE)") 
+                    print(f"{prayer_name:<10} {Fore.GREEN}{prayer_time_str:<10}{Fore.WHITE} {Fore.RED}(ACTIVE){Fore.WHITE}") 
                 else:
-                    print(f"{prayer_name:<10} {prayer_time_str:<10}")
+                    print(f"{prayer_name:<10} {Fore.GREEN}{prayer_time_str:<10}{Fore.WHITE}")
                     
-            #OPTION N
+            #OPTION n
             if option == "n":
                 #print("n")
                 now = datetime.now()
@@ -58,20 +62,36 @@ def pp(option):
                     hours_left = time_left.seconds // 3600
                     minutes_left = (time_left.seconds % 3600) // 60
                     seconds_left = time_left.seconds % 60
-                    print(f"{prayer_name:<10} {prayer_time_str:<10} Time left: {hours_left}h {minutes_left}m {seconds_left}s")
-            #OPTION L
+                    print(f"{prayer_name:<10} {Fore.GREEN}{prayer_time_str:<10}{Fore.WHITE} Time left: {Fore.YELLOW}{hours_left}h {minutes_left}m {seconds_left}s{Fore.WHITE}")
+                    
+            #OPTION l
             if option == "l":
-                return
+                if flag == 1:
+                    now = datetime.now()
+                    time_ellapsed = now - last_time
+                    hours_ellapsed = time_ellapsed.seconds // 3600
+                    minutes_ellapsed = (time_ellapsed.seconds % 3600) // 60
+                    seconds_ellapsed = time_ellapsed.seconds % 60
+                    
+                    #print(f"{last_prayer:<10} {last_time:<10}")
+                    print(f"{last_prayer} was {Fore.YELLOW}{hours_ellapsed}h {minutes_ellapsed}m {seconds_ellapsed}s{Fore.WHITE} ago")
+                    flag = 0
+                if 'active' in row.get('class', []):
+                    flag = 1
+                    #print("pass")
+                else:
+                    last_prayer = prayer_name
+                    last_time = prayer_time
                 
                     
-        
-
+                    
+            
 def main():
     		
     parser = argparse.ArgumentParser(description="A script that shows Prayer Times in Cairo")
 
 	# Define options
-    parser.add_argument('-a', '--all', action='store_true', help="All Prayer Times")
+    parser.add_argument('-a', '--all', action='store_true', help="All Prayer Times Data")
     parser.add_argument('-n', '--next', action='store_true', help="Next Prayer Times")
     parser.add_argument('-l', '--last', action='store_true', help="Last Prayer Times")
 
@@ -84,6 +104,10 @@ def main():
     # Options 
     if args.all:
         pp("a")
+        print('-----------------')
+        pp("n")
+        print('-----------------')
+        pp("l")
         
     if args.next:
         pp("n")
@@ -92,7 +116,7 @@ def main():
         pp("l")
         
     if not args.all and not args.next and not args.last:
-        print("No options Provided")
+        pp("a")
         
         
 if __name__ == "__main__":
