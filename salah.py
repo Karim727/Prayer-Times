@@ -71,7 +71,7 @@ def pp(option):
             #OPTION l
             if option == "l":
             
-                if last_prayer == 'Fajr' and 'active' in row.get('class',[]):
+                if last_prayer == 'Fajr' and 'active' in prayer_times[0].get('class',[]):
                     prayer_name = prayer_times[5].find('strong').text.strip()  # Extract the prayer name
                     prayer_time_str = prayer_times[5].find_all('td')[1].text.strip()  # Extract the prayer time
                     
