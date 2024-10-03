@@ -47,7 +47,7 @@ def pp(option):
             prayer_time_str = prayer_time.strftime('%I:%M %p')  
             
             #condition for option l
-            last_prayer = 'Fajr'
+            
             
             #OPTION a
             if option == "a":
@@ -71,7 +71,7 @@ def pp(option):
             #OPTION l
             if option == "l":
             
-                if last_prayer == 'Fajr' and 'active' in prayer_times[0].get('class',[]):
+                if 'active' in prayer_times[0].get('class',[]):
                     prayer_name = prayer_times[5].find('strong').text.strip()  # Extract the prayer name
                     prayer_time_str = prayer_times[5].find_all('td')[1].text.strip()  # Extract the prayer time
                     
@@ -95,10 +95,12 @@ def pp(option):
                     hours_ellapsed = time_ellapsed.seconds // 3600
                     minutes_ellapsed = (time_ellapsed.seconds % 3600) // 60
                     seconds_ellapsed = time_ellapsed.seconds % 60
+                    
                     print(f"{last_prayer} was {Fore.YELLOW}{hours_ellapsed}h {minutes_ellapsed}m {seconds_ellapsed}s{Style.RESET_ALL} ago")
                     
                     #print("pass")
                 last_prayer = prayer_name
+                #print(f"{last_prayer}")
                 last_time = prayer_time
                 
 
