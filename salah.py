@@ -43,7 +43,7 @@ def pp(option):
             prayer_time_str = row.find_all('td')[1].text.strip()  # Extract the prayer time
             
             # Add one hour, because the site is an hour late due to Daylight saving time
-            prayer_time = datetime.strptime(prayer_time_str, '%I:%M %p') + timedelta(hours=1)
+            prayer_time = datetime.strptime(prayer_time_str, '%I:%M %p')# + timedelta(hours=1)
             prayer_time_str = prayer_time.strftime('%I:%M %p')  
             
             #condition for option l
@@ -76,7 +76,7 @@ def pp(option):
                     prayer_time_str = prayer_times[5].find_all('td')[1].text.strip()  # Extract the prayer time
                     
                     # Add one hour, because the site is an hour late due to Daylight saving time
-                    prayer_time = datetime.strptime(prayer_time_str, '%I:%M %p') + timedelta(hours=1)
+                    prayer_time = datetime.strptime(prayer_time_str, '%I:%M %p') #+ timedelta(hours=1)
                     prayer_time_str = prayer_time.strftime('%I:%M %p')  
                     
                     now = datetime.now()
