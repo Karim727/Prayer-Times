@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-
+# Modify two +1 codes pointed at. 
 # UPCOMING UPDATES: Create an option to fetch data from another city... by changing the default city -d option.
 # Convert this code into a cpp code.
-# Some Code improvement
+# Some Code improvement // Add a database to which stores the prayer timings once per day, instead of fetching each 1 minute.
 
 import argparse
 import requests
@@ -43,7 +43,7 @@ def pp(option):
             prayer_time_str = row.find_all('td')[1].text.strip()  # Extract the prayer time
             
             # Add one hour, because the site is an hour late due to Daylight saving time
-            prayer_time = datetime.strptime(prayer_time_str, '%I:%M %p') + timedelta(hours=1)
+            prayer_time = datetime.strptime(prayer_time_str, '%I:%M %p') + timedelta(hours=1)	#<------------------------------------------------------------
             prayer_time_str = prayer_time.strftime('%I:%M %p')  
             
             #condition for option l
@@ -66,37 +66,37 @@ def pp(option):
                     hours_left = time_left.seconds // 3600
                     minutes_left = (time_left.seconds % 3600) // 60
                     seconds_left = time_left.seconds % 60
-                    print(f"{prayer_name:<10} {Fore.GREEN}{prayer_time_str:<10}{Style.RESET_ALL} Time left: {Fore.YELLOW}{hours_left}h {minutes_left}m {seconds_left}s{Style.RESET_ALL}")
+                    #print(f"{prayer_name} -{hours_left}h {minutes_left}m")
                     
             #OPTION l
-            if option == "l":
+            #if option == "l":
             
                 if 'active' in prayer_times[0].get('class',[]):
-                    prayer_name = prayer_times[5].find('strong').text.strip()  # Extract the prayer name
-                    prayer_time_str = prayer_times[5].find_all('td')[1].text.strip()  # Extract the prayer time
+                    prayer_name11 = prayer_times[5].find('strong').text.strip()  # Extract the prayer name
+                    prayer_time_str11 = prayer_times[5].find_all('td')[1].text.strip()  # Extract the prayer time
                     
                     # Add one hour, because the site is an hour late due to Daylight saving time
-                    prayer_time = datetime.strptime(prayer_time_str, '%I:%M %p') + timedelta(hours=1)
-                    prayer_time_str = prayer_time.strftime('%I:%M %p')  
+                    prayer_time11 = datetime.strptime(prayer_time_str11, '%I:%M %p') + timedelta(hours=1)  ##<--------------------------------------------------
+                    prayer_time_str11 = prayer_time11.strftime('%I:%M %p')  
                     
                     now = datetime.now()
-                    time_ellapsed = now - prayer_time
-                    hours_ellapsed = time_ellapsed.seconds // 3600
-                    minutes_ellapsed = (time_ellapsed.seconds % 3600) // 60
-                    seconds_ellapsed = time_ellapsed.seconds % 60
-                    print(f"{prayer_name} was {Fore.YELLOW}{hours_ellapsed}h {minutes_ellapsed}m {seconds_ellapsed}s{Style.RESET_ALL} ago")
+                    time_ellapsed11 = now - prayer_time11
+                    hours_ellapsed11 = time_ellapsed11.seconds // 3600
+                    minutes_ellapsed11 = (time_ellapsed11.seconds % 3600) // 60
+                    seconds_ellapsed = time_ellapsed11.seconds % 60
+                    print(f"{prayer_name} -{hours_left}h {minutes_left}m  | {prayer_name11} +{hours_ellapsed11}h {minutes_ellapsed11}m")
                     
                     break
                             
                              
                 elif 'active' in row.get('class', []):
                     now = datetime.now()
-                    time_ellapsed = now - last_time
-                    hours_ellapsed = time_ellapsed.seconds // 3600
-                    minutes_ellapsed = (time_ellapsed.seconds % 3600) // 60
-                    seconds_ellapsed = time_ellapsed.seconds % 60
+                    time_ellapsed1 = now - last_time
+                    hours_ellapsed1 = time_ellapsed1.seconds // 3600
+                    minutes_ellapsed1 = (time_ellapsed1.seconds % 3600) // 60
+                    seconds_ellapsed1 = time_ellapsed1.seconds % 60
                     
-                    print(f"{last_prayer} was {Fore.YELLOW}{hours_ellapsed}h {minutes_ellapsed}m {seconds_ellapsed}s{Style.RESET_ALL} ago")
+                    print(f"{prayer_name} -{hours_left}h {minutes_left}m | {last_prayer} +{hours_ellapsed1}h {minutes_ellapsed1}m")
                     
                     #print("pass")
                 last_prayer = prayer_name
